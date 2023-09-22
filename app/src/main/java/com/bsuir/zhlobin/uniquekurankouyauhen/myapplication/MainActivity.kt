@@ -80,7 +80,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.AboutApp
-import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.AboutAppScreen
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.Screen1
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.Screen2
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.Screen3
@@ -147,7 +146,7 @@ fun Screen(navController: NavHostController) {
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val navItems = listOf("Screen1", "Screen2", "Screen3","AboutApp")
+    val navItems = listOf("Screen1", "Screen2", "Screen3","About App")
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -163,7 +162,101 @@ fun Screen(navController: NavHostController) {
             )
         },
         content = {
-            NavBar(navController)
+            Scaffold(
+                snackbarHost = { SnackbarHost(snackbarHostState) },
+                modifier = Modifier
+                    .fillMaxSize(),
+                topBar = {
+                    TopAppBar(
+                        title = {
+                            Text(
+                                text = "MyWeather",
+                                fontSize = 30.sp,
+                                color = colorResource(R.color.dimGrey),
+                                fontWeight = FontWeight.Bold,
+                                letterSpacing = 1.sp,
+                                fontFamily = FontFamily.Cursive,
+                                style = TextStyle(
+                                    shadow = Shadow(Color.Cyan, Offset(2.0f, 5.5f), 2f),
+                                    textGeometricTransform = TextGeometricTransform(
+                                        scaleX = 1.1f,
+                                        skewX = 0f
+                                    )
+                                )
+                            )
+                        },
+                        colors = TopAppBarDefaults.smallTopAppBarColors(
+                            containerColor = colorResource(R.color.Orange)
+                        ),
+                        navigationIcon = {
+                            IconButton(onClick = {
+                                scope.launch {
+                                    drawerState.open()
+                                }
+                            }) {
+                                Icon(Icons.Filled.Menu, contentDescription = "Menu")
+                            }
+
+                        },
+                        modifier = Modifier,
+                        actions = {
+                            IconButton(
+                                onClick = { /*TODO*/ },
+                                modifier = Modifier
+                            ) {
+                                Icon(Icons.Filled.Search, contentDescription = "Search")
+                            }
+                        }
+
+
+                    )
+                },
+                bottomBar = {
+                    BottomAppBar(
+                        actions = {
+                            IconButton(onClick = { /* do something */ }) {
+                                Icon(
+                                    Icons.Filled.Check,
+                                    contentDescription = "Localized description"
+                                )
+                            }
+                            IconButton(onClick = { /* do something */ }) {
+                                Icon(
+                                    Icons.Filled.Edit,
+                                    contentDescription = "Edit",
+                                )
+                            }
+                            IconButton(onClick = { /* do something */ }) {
+                                Icon(
+                                    Icons.Filled.Favorite,
+                                    contentDescription = "Like it",
+                                )
+                            }
+                            IconButton(onClick = { /* do something */ }) {
+                                Icon(
+                                    Icons.Filled.Info,
+                                    contentDescription = "My Weather app",
+                                )
+                            }
+                        },
+                        modifier = Modifier.background(colorResource(R.color.dimGrey)),
+                        containerColor = colorResource(R.color.Slenna),
+                        floatingActionButton = {
+                            FloatingActionButton(
+                                onClick = { /* do something */ },
+                                containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
+                                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                            ) {
+                                Icon(Icons.Filled.Add, "Localized description")
+                            }
+                        }
+                    )
+                },
+                content = {
+                    innerPadding -> NavBar(navController, innerPadding)
+
+                }
+            )
         }
     )
 }
@@ -172,7 +265,7 @@ fun Screen(navController: NavHostController) {
 fun NavBar(navController: NavHostController, innerPadding: PaddingValues){
     NavHost(
         navController = navController,
-        startDestination = "AboutApp"
+        startDestination = "About App"
     ) {
         composable("Screen1") {
             Screen1()
@@ -183,8 +276,8 @@ fun NavBar(navController: NavHostController, innerPadding: PaddingValues){
         composable("Screen3") {
             Screen3()
         }
-        composable("AboutAppScreen") {
-            AboutAppScreen()
+        composable("About App") {
+            AboutApp(innerPadding)
         }
     }
 }

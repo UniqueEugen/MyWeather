@@ -39,15 +39,32 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.R
+import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.NavigationController
+import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.Router
+import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.Screen
+import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.theme.MyApplicationTheme
 
+class MainViewModel : ViewModel() {
+    // MutableState to handle our UI state
+    var counterState = mutableStateOf(0)
+
+    // Function to increment the counter
+    fun incrementCounter() {
+        counterState.value++
+    }
+}
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AboutApp(innerPadding: PaddingValues) {
-    val count = remember { mutableStateOf(0) }
+fun AboutApp(innerPadding: PaddingValues, mainViewModel: MainViewModel = viewModel()) {
+
     val myColor: Color = Color(0xFF8C00)
     val context = LocalContext.current
     val intentYouTube = remember {
@@ -67,7 +84,7 @@ fun AboutApp(innerPadding: PaddingValues) {
                 Brush.linearGradient(listOf(Color.Blue, Color.Green)),
                 shape = RectangleShape
             )
-            .clickable(onClick = { count.value += 1 })
+            .clickable(onClick = {mainViewModel.incrementCounter()})
             .verticalScroll(rememberScrollState()),
         //.horizontalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.SpaceEvenly
@@ -125,7 +142,7 @@ fun AboutApp(innerPadding: PaddingValues) {
                 .fillMaxWidth()
         ) {
             Text(
-                stringResource(R.string.AboutApp).trimIndent(),
+                stringResource(R.string.aboutAppText).trimIndent(),
                 fontSize = 28.sp,
                 softWrap = true,
                 modifier = Modifier
@@ -150,7 +167,7 @@ fun AboutApp(innerPadding: PaddingValues) {
                 .padding(bottom = 10.dp)
         ) {
             Text(
-                stringResource(R.string.clicker).trimIndent() + " ${count.value} " + stringResource(
+                stringResource(R.string.clicker).trimIndent() + " ${mainViewModel.counterState.value} " + stringResource(
                     R.string.clickerEnd
                 ),
                 fontSize = 22.sp,
@@ -174,7 +191,7 @@ fun AboutApp(innerPadding: PaddingValues) {
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally)
         ) {
-            stopAttention(count.value)
+            stopAttention(mainViewModel.counterState.value)
             /*Text(
                             color = colorResource(stopAttention(count.value)[2]),
                             text = stopAttention(count.value)[1],
@@ -310,3 +327,13 @@ fun stopAttention(tap: Int): Unit =
         fontSize = 50.sp,
         textAlign = TextAlign.Center,
     ))
+
+@Preview(showBackground = true)
+@Composable
+fun AboutScreenPreview() {
+    val padding = PaddingValues(0.dp);
+    val navController = rememberNavController();
+    MyApplicationTheme {
+        AboutApp(padding);
+    }
+}

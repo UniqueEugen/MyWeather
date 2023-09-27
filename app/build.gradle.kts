@@ -2,6 +2,8 @@
 plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    id("com.google.devtools.ksp")
+    id("kotlin-parcelize")
 
 }
 
@@ -14,7 +16,7 @@ android {
         minSdk = 26
         targetSdk = 33
         versionCode = 1
-        versionName = "0.1.1"
+        versionName = "0.1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -32,14 +34,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -76,6 +79,9 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    ksp("androidx.room:room-compiler:2.5.2")
+    implementation("androidx.core:core-ktx:1.12.0")
+   // implementation(libs.compose.destinations)
     // Navigation
    // implementation ("androidx.navigation:navigation-fragment-ktx:2.3.0-beta01")
   //  implementation ("androidx.navigation:navigation-ui-ktx:2.3.0-beta01")
@@ -86,7 +92,7 @@ dependencies {
 
     //TryByHabrGoogle
     //implementation("androidx.navigation:navigation-compose:2.4.0-beta02")
-    //TryBySimeYouTube
+    //TryBySomeYouTube
     val nav_version = "2.7.3"
 
     implementation("androidx.navigation:navigation-compose:$nav_version")

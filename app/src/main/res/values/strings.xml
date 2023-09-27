@@ -3,11 +3,18 @@
     <string name="vk_link">https://vk.com/eugen1st</string>
     <string name="telegram_link">https://vk.com/eugen1st</string>
     <string name="you_tube_link">https://www.youtube.com/channel/UCKIRqumbV83skuPwuNuYVoA</string>
-    <string name="AboutApp">MyWeather is an application that will help you to know the weather for the coming days, make a plan based on the weather and keep the memories of the best days on a walk! Share the good weather with your friends and go for a walk!</string>
+    <string name="aboutAppText">MyWeather is an application that will help you to know the weather for the coming days, make a plan based on the weather and keep the memories of the best days on a walk! Share the good weather with your friends and go for a walk!</string>
     <string name="clicker">"- What the weather like today? - I don't know. But I know that you taped the screen times! "</string>
     <string name="aboutMe">"Hi, I'm the developer of the MyWeather app! Now I'm just starting to develop Android applications, but perhaps in the future I will achieve greater heights and become a professional).\nIf you want to support, write to me.</string>
     <string name="SupportAsk">If you want to support, write to me.</string>
     <string name="clickerEnd"> times!</string>
     <string name="AboutDevLabel">"ABOUT DEVELOPER"</string>
     <string name="AboutAppLabel">ABOUT APPLICATION</string>
+    <string name="home">Home</string>
+    <string name="weather">Weather</string>
+    <string name="memories">Memories</string>
+    <string name="aboutApp">About App</string>
+    <string name="action_message">Написать сообщение</string>
+    <string name="action_friend">В друзья</string>
+    <string name="title_message">Новое сообщение</string>
 </resources>

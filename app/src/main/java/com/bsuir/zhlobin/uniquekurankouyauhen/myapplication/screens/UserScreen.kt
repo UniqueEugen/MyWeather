@@ -2,8 +2,11 @@ package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.Memory
 
 @Composable
-fun Screen1(){
-    Text(text = "Screen1")
+fun UserScreen(
+    model: Memory
+) {
+    Text("User -> ${model.memory}")
 }

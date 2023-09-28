@@ -1,8 +1,13 @@
 package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -29,6 +34,10 @@ import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.HomeVie
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.Memory
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.superstructures.home.BottomHomeSuperstructure
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.LinearGradient
+import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.text.font.FontStyle
 
 @Composable
 fun HomeScreen(innerPadding: PaddingValues, controller: NavHostController){
@@ -51,10 +60,11 @@ fun HomeContentList(controller: NavHostController,it: PaddingValues, viewModel: 
             .fillMaxSize()
             .background(
                 Brush.linearGradient(listOf(Color.Black, Color.Green)),
-                shape = RectangleShape)
+                shape = RectangleShape
+            )
     ){
         items(dataList) { item ->
-            Text(color = Color.White, text = item.memory)
+            HomeContent(item = item)
         }
     }
    /* HomeContent(
@@ -68,11 +78,60 @@ fun HomeContentList(controller: NavHostController,it: PaddingValues, viewModel: 
 
 @Composable
 private fun HomeContent(
-    items: List<Memory>,
-    onRemove: (Memory) -> Unit,
-    onAdd: () -> Unit,
+    item: Memory,
+    //onRemove: (Memory) -> Unit,
+   // onAdd: () -> Unit,
 ){
+    Box(
+        modifier= Modifier
+            .fillMaxSize(0.9f)
+            .padding(top = 70.dp, start = 20.dp, end = 20.dp)
+            .clickable { }
+            .border(
+                1.dp, shape = RectangleShape, brush = Brush.linearGradient(
+                    colors = listOf
+                        (
+                        Color.Yellow,
+                        Color.White,
+                        Color.Cyan
+                    )
+                )
+            )
 
+
+
+    ){
+        Column {
+            Row(
+                modifier = Modifier,
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End
+
+            ) {
+                Text(
+                    text = item.memory,
+                    modifier = Modifier,
+                    fontStyle = FontStyle.Italic,
+                    fontSize = 34.sp,
+                    color = Color.White,
+
+                    )
+            }
+            Row(
+                modifier= Modifier,
+                horizontalArrangement = Arrangement.End
+            ) {
+                Text(
+                    text = item.date.toString(),
+                    modifier = Modifier,
+                    fontSize = 9.sp,
+                    color = colorResource(R.color.lightYellow)
+                )
+            }
+        }
+
+
+    }
 }
 @Composable
 private fun MemoryItem(

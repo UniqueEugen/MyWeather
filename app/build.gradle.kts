@@ -4,7 +4,8 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.android)
     id("com.google.devtools.ksp")
     id("kotlin-parcelize")
-
+    id ("kotlin-kapt")
+    id ("com.google.dagger.hilt.android")
 }
 
 android {
@@ -55,7 +56,8 @@ android {
 }
 
 dependencies {
-
+    implementation("androidx.hilt:hilt-navigation-fragment:1.0.0")
+    annotationProcessor("androidx.hilt:hilt-compiler:1.0.0")
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
@@ -81,6 +83,8 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     ksp("androidx.room:room-compiler:2.5.2")
     implementation("androidx.core:core-ktx:1.12.0")
+    implementation ("com.google.dagger:hilt-android:2.44.2")
+    ksp ("com.google.dagger:hilt-android-compiler:2.28-alpha")
    // implementation(libs.compose.destinations)
     // Navigation
    // implementation ("androidx.navigation:navigation-fragment-ktx:2.3.0-beta01")

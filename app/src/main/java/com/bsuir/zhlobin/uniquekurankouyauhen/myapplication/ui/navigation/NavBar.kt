@@ -14,7 +14,7 @@ import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.Screen3
 fun NavBar(navController: NavHostController, innerPadding: PaddingValues){
     NavHost(
         navController = navController,
-        startDestination = Screen.About.screenName
+        startDestination = Screen.Home.screenName
     ) {
         composable(Screen.Home.screenName) {
             HomeScreen(innerPadding, navController)

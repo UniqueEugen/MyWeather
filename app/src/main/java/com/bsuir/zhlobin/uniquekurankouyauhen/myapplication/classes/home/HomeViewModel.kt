@@ -10,7 +10,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
-
+    private val memoryList = listOf <Memory>(
+        Memory("Perfect"),
+        Memory("Good"),
+        Memory("Bad"));
     /* val items: SnapshotStateList<Memory> = DefaultWeather.toMutableStateList()
 
     fun onClickRemoveMemories(memory: Memory) = items.remove(memory)
@@ -33,11 +36,7 @@ class HomeViewModel : ViewModel() {
     private fun loadData() {
         viewModelScope.launch {
             // Simulate loading data with delay
-            _dataFlow.emit(listOf(
-                Memory("Perfect"),
-                Memory("Good"),
-                Memory("Bad")
-            ))
+            _dataFlow.emit(memoryList)
         }
     }
 }

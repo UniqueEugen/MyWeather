@@ -10,10 +10,10 @@ class AddMemoryUseCase  @Inject constructor(private val memoriesRepository: Memo
         if (memory.memory.isEmpty()) {
             throw Exception("Please specify a planet name")
         }
-        /*if (planet.distanceLy < 0) {
+        /*if (memory.distanceLy < 0) {
             throw Exception("Please enter a positive distance")
         }
-        if (planet.discovered.after(Date())) {
+        if (memory.discovered.after(Date())) {
             throw Exception("Please enter a discovery date in the past")
         }*/
         memoriesRepository.addMemory(memory)

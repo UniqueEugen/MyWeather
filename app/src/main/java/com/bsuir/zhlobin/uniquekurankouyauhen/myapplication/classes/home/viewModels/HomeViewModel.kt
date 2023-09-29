@@ -1,10 +1,8 @@
-package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home
+package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.viewModels
 
-import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
+import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.Memory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -13,19 +11,9 @@ class HomeViewModel : ViewModel() {
     private val memoryList = listOf <Memory>(
         Memory("Perfect"),
         Memory("Good"),
-        Memory("Bad"));
-    /* val items: SnapshotStateList<Memory> = DefaultWeather.toMutableStateList()
+        Memory("Bad")
+    );
 
-    fun onClickRemoveMemories(memory: Memory) = items.remove(memory)
-
-    private companion object {
-
-        private val DefaultWeather = listOf(
-            Memory("Perfect"),
-            Memory("Good"),
-            Memory("Bad")
-        )
-    }*/
     private val _dataFlow = MutableStateFlow<List<Memory>>(emptyList())
     val dataFlow: StateFlow<List<Memory>> = _dataFlow
 
@@ -39,4 +27,16 @@ class HomeViewModel : ViewModel() {
             _dataFlow.emit(memoryList)
         }
     }
+/* val items: SnapshotStateList<Memory> = DefaultWeather.toMutableStateList()
+
+    fun onClickRemoveMemories(memory: Memory) = items.remove(memory)
+
+    private companion object {
+
+        private val DefaultWeather = listOf(
+            Memory("Perfect"),
+            Memory("Good"),
+            Memory("Bad")
+        )
+    }*/
 }

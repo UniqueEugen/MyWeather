@@ -16,7 +16,7 @@ class ApiRemoteDataSource @Inject constructor(): RemoteDataSource {
     }
 
     override suspend fun addMemory(memory: Memory): Memory{
-        val memoryToAdd = if (memory.id.toString() == null) memory.copy(id = UUID.randomUUID()) else memory
+        val memoryToAdd = if (memory.id.toString() == "11") memory.copy(id = UUID.randomUUID()) else memory
         memoriesCache.add(memoryToAdd)
         return memoryToAdd
     }

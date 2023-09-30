@@ -38,7 +38,7 @@ class AddEditMemoryViewModel @Inject constructor(
     private val addMemoryUseCase: AddMemoryUseCase,
     private val memoriesRepository: MemoriesRepository
 ): ViewModel() {
-    private val memoryId: String? = savedStateHandle[MemoriesDestinationsArgs.MEMORY_ID_ARG]
+    private var memoryId: String? = savedStateHandle[MemoriesDestinationsArgs.MEMORY_ID_ARG]
 
     private val _uiState = MutableStateFlow(AddEditMemoryUiState())
     val uiState: StateFlow<AddEditMemoryUiState> = _uiState.asStateFlow()
@@ -57,16 +57,26 @@ class AddEditMemoryViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _uiState.update { it.copy(isMemorySaving = true) }
-                addMemoryUseCase(
-                    Memory(
-                        id = UUID.fromString(memoryId),
-                        memory = _uiState.value.memory,
-                        date = Date()
+                System.out.println(memoryId.toString() + _uiState.value.memory)
+                if(memoryId!=null) {
+                    addMemoryUseCase(
+                        Memory(
+                            id = UUID.fromString(memoryId),
+                            memory = _uiState.value.memory
+                        )
                     )
-                )
+                }else{
+                    addMemoryUseCase(
+                        Memory(
+                            id = null,
+                            memory = _uiState.value.memory
+                        )
+                    )
+                }
                 _uiState.update { it.copy(isMemorySaved = true) }
             }
             catch (e: Exception) {
+                System.out.println(e)
                 _uiState.update { it.copy(memorySavingError = R.string.error_saving_memory) }
             }
             finally {

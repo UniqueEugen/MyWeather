@@ -8,9 +8,9 @@ import java.util.UUID
 
 @Entity(tableName = "memories")
 data class MemoryEntity(
-    val memory: String,
+    val memory: String="",
     val date: Date = Date(),
-    @PrimaryKey val id: UUID = UUID.randomUUID(), // java.util.UUID, сила котлина
+    @PrimaryKey val id: UUID, // java.util.UUID, сила котлина
 ){
     fun toMemory(): Memory {
         return Memory(

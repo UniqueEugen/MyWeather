@@ -50,9 +50,9 @@ class MemoriesListViewModel @Inject constructor(
         viewModelScope.launch {
             withLoading {
                 val memories = arrayOf(
-                    Memory(memory = "It was a perfect weather",date= Date()),
-                    Memory(memory = "It was a normal weather",date= Date()),
-                    Memory(memory = "It was a good weather",date= Date()),
+                    Memory(memory = "It was a perfect weather"),
+                    Memory(memory = "It was a normal weather"),
+                    Memory(memory = "It was a good weather"),
                 )
                 memories.forEach { addMemoryUseCase(it) }
             }

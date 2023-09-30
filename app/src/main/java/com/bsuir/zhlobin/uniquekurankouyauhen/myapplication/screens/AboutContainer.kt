@@ -3,10 +3,10 @@ package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.Memory
-import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.NavigationController
+//import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.NavigationController
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.Router
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.Screen
-
+/*
 @Composable
 fun AboutContainer(
     externalRouter: Router,
@@ -26,4 +26,4 @@ fun AboutContainer(
         )
     )
 
-}
+}*/

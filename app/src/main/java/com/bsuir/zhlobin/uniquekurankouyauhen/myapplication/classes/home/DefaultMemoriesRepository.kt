@@ -13,7 +13,7 @@ class DefaultMemoriesRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val ioCoroutineDispatcher: CoroutineDispatcher
 ): MemoriesRepository {
-    override fun getMemoryFlow(): Flow<WorkResult<List<Memory>>> {
+    override fun getMemoriesFlow(): Flow<WorkResult<List<Memory>>> {
         return localDataSource.getMemoriesFlow()
     }
 

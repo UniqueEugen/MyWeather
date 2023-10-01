@@ -99,7 +99,7 @@ fun HomeContentList(
 
 
         if (uiState.memories.isEmpty()) {
-            NoPlanetsInfo(it, viewModel)
+            NoMemoiesInfo(it, viewModel)
         }
         else {
             HomeCommonContent(
@@ -145,7 +145,9 @@ private fun MemoryItem(
 
 
     ){
-        Row() {
+        Row(
+            modifier = Modifier.padding(5.dp)
+        ) {
             Column {
                 Row(
                     modifier = Modifier.fillMaxWidth(0.8f),
@@ -157,7 +159,7 @@ private fun MemoryItem(
                         text = item.memory,
                         modifier = Modifier,
                         fontStyle = FontStyle.Italic,
-                        fontSize = 28.sp,
+                        fontSize = 24.sp,
                         color = Color.White,
 
                         )
@@ -212,7 +214,7 @@ private fun HomeCommonContent(
     }
 }
 @Composable
-fun NoPlanetsInfo(it:PaddingValues, viewModel: MemoriesListViewModel) {
+fun NoMemoiesInfo(it:PaddingValues, viewModel: MemoriesListViewModel) {
     Column(modifier = Modifier
         .padding(it)
         .fillMaxSize()
@@ -221,7 +223,7 @@ fun NoPlanetsInfo(it:PaddingValues, viewModel: MemoriesListViewModel) {
             modifier=Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text(stringResource(R.string.no_memories_label), color = Color.Gray)
+            Text(stringResource(R.string.no_memories_label), color = Color.Gray, fontSize = 16.sp)
         }
     }
 }

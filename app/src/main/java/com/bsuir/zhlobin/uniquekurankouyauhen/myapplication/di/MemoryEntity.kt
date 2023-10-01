@@ -25,6 +25,6 @@ fun Memory.toMemoryEntity(): MemoryEntity  {
     return MemoryEntity(
         id = id ?: UUID.randomUUID(),
         memory = memory,
-        date = Date()
+        date = date
     )
 }

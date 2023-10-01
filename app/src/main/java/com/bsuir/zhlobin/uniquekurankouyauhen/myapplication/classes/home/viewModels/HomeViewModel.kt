@@ -10,9 +10,9 @@ import java.util.Date
 
 class HomeViewModel : ViewModel() {
     private val memoryList = listOf <Memory>(
-        Memory("Perfect"),
-        Memory("Good"),
-        Memory("Bad")
+        Memory("Perfect", Date()),
+        Memory("Good", Date()),
+        Memory("Bad", Date())
     );
 
     private val _dataFlow = MutableStateFlow<List<Memory>>(emptyList())

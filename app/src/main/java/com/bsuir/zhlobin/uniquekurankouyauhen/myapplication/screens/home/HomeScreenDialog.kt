@@ -1,6 +1,8 @@
 package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.home
 
 
+import android.app.DatePickerDialog
+import android.widget.DatePicker
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -15,29 +17,27 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.outlined.Create
+import androidx.compose.material3.AlertDialogDefaults.shape
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.BottomAppBarDefaults
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -55,20 +55,16 @@ import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.viewMod
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FloatingActionButtonDefaults
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.rememberNavController
-import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.MemoriesDestinations
-import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.NavBar
-import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.Screen
+import java.util.Calendar
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -87,10 +83,16 @@ fun AddEditMemoryScreen(
         bottomBar = {
             BottomAppBar(
                 actions = {
-                    IconButton(onClick = { viewModel.skipEditMemory() }) {
-                        Icon(
-                            Icons.Filled.Close,
-                            contentDescription = "Close whithout saving"
+                    androidx.compose.material.IconButton(
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .width(32.dp)
+                            .height(32.dp),
+                        onClick = { viewModel.deleteMemory() }
+                    ) {
+                        androidx.compose.material.Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Delete"
                         )
                     }
                 },
@@ -111,7 +113,9 @@ fun AddEditMemoryScreen(
             loading = uiState.isLoading,
             saving = uiState.isMemorySaving,
             name = uiState.memory,
+            date = uiState.memoryAdded,
             onNameChanged = { newName -> viewModel.setMemoryName(newName) },
+            onDateChanged = { newDate -> viewModel.setMemoryDate(newDate)},
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
@@ -156,7 +160,9 @@ private fun AddEditMemoryContent(
     loading: Boolean,
     saving: Boolean,
     name: String,
+    date: Date,
     onNameChanged: (String) -> Unit,
+    onDateChanged: (Date) -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (loading) {
@@ -169,7 +175,7 @@ private fun AddEditMemoryContent(
                 .fillMaxHeight()
                 .padding(all = 30.dp)
                 .verticalScroll(rememberScrollState())
-                .border(
+                /*.border(
                     1.dp, shape = RectangleShape, brush = Brush.linearGradient(
                         colors = listOf
                             (
@@ -178,18 +184,23 @@ private fun AddEditMemoryContent(
                             Color.Cyan
                         )
                     )
-                )
+                )*/
         ) {
 
             val gradientColors = listOf(Color.Cyan, colorResource(R.color.deepSkyBlue),
                 colorResource(R.color.violet), colorResource(R.color.blueviolet) /*...*/)
+            val rainbowBrush = remember {
+                Brush.linearGradient(
+                    colorStops = arrayOf(0.2f to Color.Red, 0.4f to Color.Yellow, 0.6f to  Color.Green,0.8f to Color.Cyan, 0.9f to Color.Blue)
+                )
+            }
             TextField(
                 value = name,
                 modifier = Modifier
                     .fillMaxWidth()
                     //.defaultMinSize(minHeight = 50.dp)
-                    .fillMaxHeight()
-                   /* .background(
+                    .defaultMinSize(minHeight = 100.dp)
+                    /* .background(
                         brush = Brush.linearGradient(
                             listOf(
                                 colorResource(R.color.blueviolet),
@@ -210,7 +221,8 @@ private fun AddEditMemoryContent(
                             )
                         )
                     ),
-                onValueChange = onNameChanged ,
+
+                onValueChange = onNameChanged,
                 label = {
                     Text(
                         text = stringResource(R.string.memory_label), style = TextStyle(
@@ -228,16 +240,17 @@ private fun AddEditMemoryContent(
                 placeholder = {
                     Text(
                         text = stringResource(R.string.name_hint),
-                        color = Color.White,
+                        fontSize = 20.sp,
+                        color = Color.Black,
                         style = MaterialTheme.typography.bodyLarge
-
                     )
                 },
-                textStyle = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold, fontSize = 27.sp, brush = Brush.linearGradient(
-                    colors = listOf(Color.Magenta, Color.Cyan))),
-                leadingIcon = { Icon(Icons.Outlined.Create, contentDescription = "Пишем") },
-                maxLines = 1,
-                colors = TextFieldDefaults.textFieldColors()
+                textStyle = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold, fontSize = 27.sp, brush = rainbowBrush//Brush.linearGradient(
+                   // colors = listOf(Color.Magenta, Color.Cyan))
+                ),
+                leadingIcon = { Icon(Icons.Outlined.Create, contentDescription = "Пишем", tint = Color.White) },
+                shape = RectangleShape,
+                colors = TextFieldDefaults.textFieldColors(containerColor = Color.Black, cursorColor = Color.White)
             )
          /*   OutlinedTextField(
                 value = distanceLy.toString(),
@@ -252,6 +265,11 @@ private fun AddEditMemoryContent(
                 ),
                 colors = textFieldColors
             )*/
+            MyCalendar(
+                date = date,
+                onDateChanged = onDateChanged,
+                modifier = Modifier
+            )
         }
 
         if (saving) {
@@ -275,6 +293,82 @@ private fun LoadingContent(
     }
 }
 
+
+@Composable
+fun MyCalendar(
+    onDateChanged: (Date) -> Unit,
+    date: Date,
+    modifier: Modifier
+){
+
+    // Fetching the Local Context
+    val mContext = LocalContext.current
+
+    // Declaring integer values
+    // for year, month and day
+    val mYear: Int
+    val mMonth: Int
+    val mDay: Int
+
+    // Initializing a Calendar
+    val mCalendar = Calendar.getInstance()
+
+    // Fetching current year, month and day
+    mYear = mCalendar.get(Calendar.YEAR)
+    mMonth = mCalendar.get(Calendar.MONTH)
+    mDay = mCalendar.get(Calendar.DAY_OF_MONTH)
+
+    mCalendar.time = Date()
+
+    // Declaring a string value to
+    // store date in string format
+    val mDate = remember { mutableStateOf("") }
+
+    // Declaring DatePickerDialog and setting
+    // initial values as current values (present year, month and day)
+    val mDatePickerDialog = DatePickerDialog(
+        mContext,
+        { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->run{
+                mDate.value = "$mDayOfMonth/${mMonth+1}/$mYear"
+                onDateChanged(Date(mYear, mMonth, mDayOfMonth))
+            }
+        }, mYear, mMonth, mDay
+    )
+
+    Column(modifier = Modifier.fillMaxSize().padding(top = 50.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+        // Displaying the mDate value in the Text
+        Box(
+            modifier = Modifier.background(brush = Brush.linearGradient(listOf(Color.Black, Color.Black)),
+                shape= RectangleShape,
+                alpha= 0.4f)
+                .border(
+                    1.dp, shape = RectangleShape, brush = Brush.linearGradient(
+                        colors = listOf
+                            (
+                            Color.Red,
+                            Color.Yellow,
+                            Color.Blue
+                        )
+                    )
+                )
+        ) {
+            Text(text = "Selected Date: ${date}",modifier= Modifier.padding(5.dp), fontSize = 20.sp, textAlign = TextAlign.Center, color = Color.White)
+        }
+
+        // Adding a space of 100dp height
+        Spacer(modifier = Modifier.size(70.dp))
+
+        // Creating a button that on
+        // click displays/shows the DatePickerDialog
+        Button(onClick = {
+            mDatePickerDialog.show()
+        }, colors = ButtonDefaults.buttonColors(containerColor = Color(0XFF0F9D58)) ) {
+            Text(text = "Open Date Picker", color = Color.White)
+        }
+    }
+}
+
+
 @Preview
 @Composable
 fun AddEditContentPreview() {
@@ -283,6 +377,8 @@ fun AddEditContentPreview() {
         loading = true,
         name = "aaa",
         onNameChanged = {},
+        onDateChanged = {},
+        date = Date()
     )
 }
 

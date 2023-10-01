@@ -6,6 +6,6 @@ import java.util.Date
 
 data class Memory(
     val memory: String,
-    val date: Date = Date(),
+    val date: Date,
     val id: UUID? = null
 )

@@ -46,9 +46,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.R
-import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.NavigationController
-import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.Router
-import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.Screen
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.theme.MyApplicationTheme
 
 class MainViewModel : ViewModel() {

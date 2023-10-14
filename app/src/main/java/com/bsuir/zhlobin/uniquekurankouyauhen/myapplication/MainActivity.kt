@@ -11,10 +11,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.AboutApp
-import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.HomeScreen
+import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.home.HomeScreen
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.superstructures.Screen
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.theme.MyApplicationTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +35,7 @@ fun App(){
         }
 
     }
-}
+}/*
 @Preview(showBackground = true)
 @Composable
 fun AppPreview() {
@@ -47,11 +49,11 @@ fun AboutScreenPreview() {
     MyApplicationTheme {
         AboutApp(padding);
     }
-}
-
+}*/
+/*
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview(){
     val padding = PaddingValues(0.dp);
     HomeScreen(innerPadding = padding, controller = rememberNavController())
-}
+}*/

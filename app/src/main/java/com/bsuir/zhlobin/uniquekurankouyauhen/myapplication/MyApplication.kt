@@ -1,22 +1,25 @@
-package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.theme
+package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication
 
+import android.app.Application
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
+import dagger.hilt.android.HiltAndroidApp
 
-class MyApplication : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
+@HiltAndroidApp
+class MyApplication : Application() {
+   /* override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         startKoin {
             androidContext(this@MyApplication)
             modules()
         }}
         private fun modules() {
-            TODO("Not yet implemented")
+
         }
 
         private fun androidContext(applicationDearDogs: MyApplication) {
 
-        }
+        }*/
 
         private fun startKoin(function: () -> Unit) {
 

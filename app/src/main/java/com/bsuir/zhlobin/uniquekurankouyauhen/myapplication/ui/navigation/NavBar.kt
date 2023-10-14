@@ -17,7 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.R
-import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.AboutApp
+import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.abuutApp.AboutApp
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.home.HomeScreen
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.Screen2
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.Screen3
@@ -26,7 +26,6 @@ import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.Memori
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.MemoriesDestinationsArgs.TITLE_ARG
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.MemoriesDestinationsArgs.USER_MESSAGE_ARG
 import kotlinx.coroutines.CoroutineScope
-import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -31,7 +31,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.outlined.Create
-import androidx.compose.material3.AlertDialogDefaults.shape
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -64,6 +63,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import java.util.Calendar
+import java.util.Calendar.DATE
+import java.util.Calendar.MONTH
+import java.util.Calendar.YEAR
 import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,7 +80,9 @@ fun AddEditMemoryScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     System.out.println("ui memory: "+ uiState.memory);
     Scaffold(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize()/*fillMaxHeight(0.5f).fillMaxWidth().padding(top= 400.dp).background(Brush.linearGradient(
+            listOf(Color.Transparent, Color.Transparent)
+        ), alpha=0f)*/,
         snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
             BottomAppBar(
@@ -334,6 +338,7 @@ fun MyCalendar(
             }
         }, mYear, mMonth, mDay
     )
+    val cal = Calendar.getInstance()
 
     Column(modifier = Modifier.fillMaxSize().padding(top = 50.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
         // Displaying the mDate value in the Text
@@ -352,9 +357,10 @@ fun MyCalendar(
                     )
                 )
         ) {
-            Text(text = "Selected Date: ${date}",modifier= Modifier.padding(5.dp), fontSize = 20.sp, textAlign = TextAlign.Center, color = Color.White)
+            Text(text = "Selected Date: ${date.date}/${date.month+1}/${date.year}",modifier= Modifier.padding(5.dp), fontSize = 20.sp, textAlign = TextAlign.Center, color = Color.White)
         }
-
+        //${cal.get(DATE)}/${cal.get(MONTH+1)}/${cal.get(YEAR)}
+        //${date.date}/${date.month+1}/${date.year}
         // Adding a space of 100dp height
         Spacer(modifier = Modifier.size(70.dp))
 

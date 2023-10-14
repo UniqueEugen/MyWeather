@@ -1,6 +1,5 @@
 package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home
 
-import android.os.Parcelable
 import java.util.UUID
 import java.util.Date
 

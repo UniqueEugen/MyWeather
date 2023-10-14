@@ -1,4 +1,4 @@
-package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens
+package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.abuutApp
 
 import android.annotation.SuppressLint
 import android.content.Intent

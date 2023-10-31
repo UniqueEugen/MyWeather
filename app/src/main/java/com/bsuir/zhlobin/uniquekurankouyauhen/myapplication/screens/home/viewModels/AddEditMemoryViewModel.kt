@@ -1,4 +1,4 @@
-package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.viewModels
+package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.home.viewModels
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -12,6 +12,7 @@ import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.domain.AddMemoryUseC
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.MemoriesDestinationsArgs
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.MemoriesNavigationActions
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -96,9 +97,9 @@ class AddEditMemoryViewModel @Inject constructor(
                  addMemoryUseCase(
                      Memory(
                          id = UUID.fromString(memoryId),
-                         memory = _uiState.value.memory,
-                         date = _uiState.value.memoryAdded
-                     )
+                     memory = _uiState.value.memory,
+                     date = _uiState.value.memoryAdded
+                 )
                  )
              }else{
                  addMemoryUseCase(
@@ -129,6 +130,7 @@ class AddEditMemoryViewModel @Inject constructor(
              _uiState.update { it.copy(isLoading = false) }
          }
          else {
+
              val memory = result.data
              _uiState.update {
                  it.copy(

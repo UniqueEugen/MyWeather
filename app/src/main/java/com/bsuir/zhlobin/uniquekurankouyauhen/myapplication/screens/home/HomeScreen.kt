@@ -41,8 +41,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
-import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.viewModels.MemoriesListUiState
-import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.viewModels.MemoriesListViewModel
+import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.home.viewModels.MemoriesListUiState
+import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.home.viewModels.MemoriesListViewModel
 import java.util.UUID
 
 @Composable

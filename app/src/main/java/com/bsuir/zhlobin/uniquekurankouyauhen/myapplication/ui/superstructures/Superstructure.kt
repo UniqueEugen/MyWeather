@@ -1,5 +1,6 @@
 package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.superstructures
 
+import android.content.res.Resources.Theme
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxSize
@@ -118,7 +119,7 @@ fun Screen(navController: NavHostController) {
                             )
                         },
                         colors = TopAppBarDefaults.smallTopAppBarColors(
-                            containerColor = colorResource(R.color.Orange)
+                            containerColor =  colorResource(R.color.Orange)
                         ),
                         navigationIcon = {
                             IconButton(onClick = {

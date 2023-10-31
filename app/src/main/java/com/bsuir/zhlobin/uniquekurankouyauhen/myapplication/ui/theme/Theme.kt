@@ -15,17 +15,20 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.R
 
 private val DarkColorScheme = darkColorScheme(
     primary = dimGrey,
     secondary = Color.Black,
-    tertiary = Pink80
+    tertiary = Pink80,
+    background = Color.DarkGray
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = green,
     secondary = yellow,
-    tertiary = Pink40
+    tertiary = Pink40,
+    background = Color(R.color.Orange)
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -46,10 +49,10 @@ fun MyApplicationTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-       /* dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }*/
+        }
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }

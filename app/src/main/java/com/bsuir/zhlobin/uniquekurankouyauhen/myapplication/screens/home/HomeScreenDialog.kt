@@ -50,7 +50,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.R
-import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.viewModels.AddEditMemoryViewModel
+import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.home.viewModels.AddEditMemoryViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.material3.CircularProgressIndicator

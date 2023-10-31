@@ -26,7 +26,9 @@ fun App(){
     MyApplicationTheme {
         Surface {
             val navController = rememberNavController();
-            Screen(navController)
+            MyApplicationTheme {
+                Screen(navController)
+            }
         }
 
     }

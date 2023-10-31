@@ -162,6 +162,14 @@ dependencies {
     implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
     implementation ("androidx.navigation:navigation-compose:2.6.0")
     implementation ("androidx.navigation:navigation-runtime-ktx:2.6.0")
+
+    //InernetAsync
+    implementation("io.coil-kt:coil-compose:2.0.0-rc01")
+
+    //Pager
+    implementation ("com.google.accompanist:accompanist-pager:0.19.0")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.19.0")
+
 }
 hilt {
     enableAggregatingTask = true

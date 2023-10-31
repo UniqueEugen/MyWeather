@@ -32,7 +32,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.R
-import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.viewModels.MemoriesListViewModel
+import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.home.viewModels.MemoriesListViewModel
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.home.HomeScreenContent
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.MemoriesNavigationActions
 import java.util.UUID

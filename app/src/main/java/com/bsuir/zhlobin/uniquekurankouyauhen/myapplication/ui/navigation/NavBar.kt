@@ -19,9 +19,9 @@ import androidx.navigation.navArgument
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.R
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.abuutApp.AboutApp
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.home.HomeScreen
-import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.Screen2
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.Screen3
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.home.AddEditMemoryScreen
+import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.weather.weatherScreen
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.MemoriesDestinationsArgs.MEMORY_ID_ARG
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.MemoriesDestinationsArgs.TITLE_ARG
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.MemoriesDestinationsArgs.USER_MESSAGE_ARG
@@ -76,7 +76,7 @@ fun NavBar(
             )
         }
         composable(Screen.Weather.screenName) {
-            Screen2(innerPadding)
+            weatherScreen(innerPadding)
         }
         composable(Screen.Memories.screenName) {
             Screen3(innerPadding)

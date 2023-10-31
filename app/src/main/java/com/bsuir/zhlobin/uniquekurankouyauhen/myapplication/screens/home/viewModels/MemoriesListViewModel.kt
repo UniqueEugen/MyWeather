@@ -1,4 +1,4 @@
-package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.viewModels
+package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.home.viewModels
 
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.WorkResult
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.domain.AddMemoryUseCase

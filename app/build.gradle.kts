@@ -170,6 +170,9 @@ dependencies {
     implementation ("com.google.accompanist:accompanist-pager:0.19.0")
     implementation("com.google.accompanist:accompanist-pager-indicators:0.19.0")
 
+    //volley
+    implementation("com.android.volley:volley-cronet:1.2.1")
+
 }
 hilt {
     enableAggregatingTask = true

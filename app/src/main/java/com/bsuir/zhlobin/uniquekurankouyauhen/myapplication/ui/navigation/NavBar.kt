@@ -1,6 +1,7 @@
 package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation
 
 import android.app.Activity
+import android.content.Context
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
@@ -32,6 +33,7 @@ import kotlinx.coroutines.CoroutineScope
 fun NavBar(
     navController: NavHostController,
     innerPadding: PaddingValues,
+    context: Context,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
     startDestination: String = MemoriesDestinations.MEMORIES_ROUTE,
@@ -76,7 +78,7 @@ fun NavBar(
             )
         }
         composable(Screen.Weather.screenName) {
-            weatherScreen(innerPadding)
+            weatherScreen(innerPadding, context)
         }
         composable(Screen.Memories.screenName) {
             Screen3(innerPadding)

@@ -1,5 +1,6 @@
 package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,18 +17,18 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            App();
+            App(this);
         }
     }
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun App(){
+fun App(context: Context) {
     MyApplicationTheme {
         Surface {
             val navController = rememberNavController();
             MyApplicationTheme {
-                Screen(navController)
+                Screen(navController, context)
             }
         }
 

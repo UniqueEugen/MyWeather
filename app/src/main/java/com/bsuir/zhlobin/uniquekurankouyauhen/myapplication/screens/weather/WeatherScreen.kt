@@ -1,5 +1,6 @@
 package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.weather
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,6 +17,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -28,13 +30,23 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.MainActivity
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.R
+import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.weather.wiewModels.WeatherViewModel
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.theme.BlueLight
 
 
 @Composable
-fun weatherScreen(innerPadding: PaddingValues){
+fun weatherScreen(
+    innerPadding: PaddingValues,
+    context: Context,
+    viewModel: WeatherViewModel = hiltViewModel(),
+){
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    viewModel.getItem("Zlobin", context)
     Image(
         bitmap = ImageBitmap.imageResource(R.drawable.weather_back_pic),
         contentDescription = "im1",
@@ -47,14 +59,9 @@ fun weatherScreen(innerPadding: PaddingValues){
         modifier = Modifier
             .padding(paddingValues = innerPadding)
     ) {
-        mainCard()
-        tabLayout()
+        mainCard(uiState.currentDay)
+        tabLayout(uiState.mList)
     }
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun WeatherScreenPrev(){
-    weatherScreen(innerPadding = PaddingValues(0.dp));
-}

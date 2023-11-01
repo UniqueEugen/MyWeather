@@ -1,6 +1,7 @@
 package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.weather
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,16 +38,22 @@ import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.MainActivity
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.R
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.weather.wiewModels.WeatherViewModel
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.theme.BlueLight
+import com.google.android.gms.location.FusedLocationProviderClient
 
 
 @Composable
 fun weatherScreen(
     innerPadding: PaddingValues,
     context: Context,
+    latitudeAndLongitude: String,
     viewModel: WeatherViewModel = hiltViewModel(),
 ){
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    viewModel.getItem("Zlobin", context)
+    Log.d("MyLog", "Dfyf ${latitudeAndLongitude}")
+    viewModel.getItem(latitudeAndLongitude, context)
+    if (uiState.showDialog){
+        dialogSearch(viewModel, uiState.city, onSubmit = {viewModel.getItem(uiState.city, context)})
+    }
     Image(
         bitmap = ImageBitmap.imageResource(R.drawable.weather_back_pic),
         contentDescription = "im1",
@@ -59,8 +66,11 @@ fun weatherScreen(
         modifier = Modifier
             .padding(paddingValues = innerPadding)
     ) {
-        mainCard(uiState.currentDay)
-        tabLayout(uiState.mList)
+        mainCard(uiState.currentDay, sync = {viewModel.getItem(latitudeAndLongitude, context)},
+            search = {
+                viewModel.showDialog()
+            })
+        tabLayout(uiState.mList, uiState.currentDay)
     }
 }
 

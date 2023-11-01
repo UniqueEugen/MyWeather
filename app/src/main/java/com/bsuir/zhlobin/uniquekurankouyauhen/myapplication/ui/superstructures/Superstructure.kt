@@ -1,6 +1,8 @@
 package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.superstructures
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
@@ -23,6 +25,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -38,14 +41,31 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextGeometricTransform
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.R
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.NavBar
+import com.google.android.gms.location.LocationServices
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Screen(navController: NavHostController, context: Context) {
+fun Screen(navController: NavHostController, context: Context, viewModel: superstructureViewModel = hiltViewModel()) {
+    viewModel.setLocation(context)
+    Thread.sleep(500L)
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -121,64 +141,44 @@ fun Screen(navController: NavHostController, context: Context) {
 
                         },
                         modifier = Modifier,
-                       /* actions = {
-                            IconButton(
-                                onClick = {  },
-                                modifier = Modifier
-                            ) {
-                                Icon(Icons.Filled.Search, contentDescription = "Search")
-                            }
-                        }*/
-
-
                     )
                 },
-                /*bottomBar = {
-                    BottomAppBar(
-                        actions = {
-                            IconButton(onClick = { /* do something */ }) {
-                                Icon(
-                                    Icons.Filled.Check,
-                                    contentDescription = "Localized description"
-                                )
-                            }
-                            IconButton(onClick = { /* do something */ }) {
-                                Icon(
-                                    Icons.Filled.Edit,
-                                    contentDescription = "Edit",
-                                )
-                            }
-                            IconButton(onClick = { /* do something */ }) {
-                                Icon(
-                                    Icons.Filled.Favorite,
-                                    contentDescription = "Like it",
-                                )
-                            }
-                            IconButton(onClick = { /* do something */ }) {
-                                Icon(
-                                    Icons.Filled.Info,
-                                    contentDescription = "My Weather app",
-                                )
-                            }
-                        },
-                        modifier = Modifier.background(colorResource(R.color.dimGrey)),
-                        containerColor = colorResource(R.color.Slenna),
-                        floatingActionButton = {
-                            FloatingActionButton(
-                                onClick = { /* do something */ },
-                                containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
-                                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
-                            ) {
-                                Icon(Icons.Filled.Add, "Localized description")
-                            }
-                        }
-                    )
-                },*/
                 content = {
-                        innerPadding -> NavBar(navController, innerPadding, context)
+                        innerPadding -> NavBar(navController, innerPadding, context, uiState.latLon)
 
                 }
             )
         }
     )
+}
+
+
+
+@SuppressLint("MissingPermission")
+suspend fun getLocation(context: Context) = suspendCoroutine {
+    LocationServices.getFusedLocationProviderClient(context).lastLocation.addOnSuccessListener { res->
+        try {
+            it.resume("${res.latitude},${res.longitude}")
+        }catch (e: NullPointerException){
+            Log.d("MyLog", e.toString())
+            it.resume("0.0,0.0")
+        }
+
+    }.addOnFailureListener { res-> it.resume("0.0,0.0")  }
+}
+
+data class location(
+    var latLon: String=""
+)
+@HiltViewModel
+class superstructureViewModel @Inject constructor(): ViewModel() {
+    private val _uiState = MutableStateFlow(location())
+    val uiState: StateFlow<location> = _uiState.asStateFlow()
+    fun setLocation(context: Context) {
+        Log.d("MyLog", "Dfsfdfjsodfhisdf")
+        viewModelScope.async {
+            _uiState.update { it.copy(latLon = getLocation(context)) }
+            Log.d("MyLog", "Df ${_uiState.value.latLon}")
+        }
+    }
 }

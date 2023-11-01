@@ -1,11 +1,7 @@
 package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.weather
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
@@ -13,14 +9,11 @@ import androidx.compose.material.TabRowDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.data.WeatherModel
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.weather.wiewModels.WeatherViewModel
@@ -30,11 +23,14 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
+import org.json.JSONArray
+import org.json.JSONObject
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun tabLayout(
-    daysWeather: MutableState<List<WeatherModel>>
+    daysWeather: MutableState<List<WeatherModel>>,
+    currentDay: MutableState<WeatherModel>
 ){
     val tabList = listOf("HOURS", "DAYS")
     val pagerState = rememberPagerState()
@@ -73,28 +69,32 @@ fun tabLayout(
             modifier = Modifier.weight(1.0f)
         ) {
             index->
-            LazyColumn(modifier = Modifier
-                .fillMaxSize()
-            ){
-                itemsIndexed(
-                   daysWeather.value
-                ) {
-                    _, item -> ListItem(item)
-                }
+            val list = when(index){
+                0-> getWeatherByHours(currentDay.value.hours)
+                1-> daysWeather.value
+                else->daysWeather.value
             }
+            MainList(list = list, currentDay = currentDay)
         }
     }
 }
 
-/*
-@Composable
-@Preview(showBackground = true)
-fun PrevScreen(){
-    weatherScreen(innerPadding = PaddingValues(0.dp))
+private fun getWeatherByHours(hours:String): List<WeatherModel>{
+    if(hours.isEmpty()) return listOf()
+    val hoursArray = JSONArray(hours)
+    val list = ArrayList<WeatherModel>()
+    for(i in 0 until  hoursArray.length()){
+        val item = hoursArray[i] as JSONObject
+        var time =  item.getString("time")
+        time = time.substring(time.length-6)
+        list.add(
+            WeatherModel(
+                date = time,
+                currentTemp = item.getString("temp_c"),
+                condition = item.getJSONObject("condition").getString("text"),
+                conditionIcon = item.getJSONObject("condition").getString("icon"),
+            )
+        )
+    }
+    return list
 }
-
-@Composable
-@Preview(showBackground = true)
-fun prevTabLayout() {
-    tabLayout();
-}*/

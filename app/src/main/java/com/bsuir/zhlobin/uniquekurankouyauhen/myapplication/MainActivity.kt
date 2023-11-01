@@ -10,6 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.superstructures.Screen
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.theme.MyApplicationTheme
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,6 +28,7 @@ class MainActivity : ComponentActivity() {
 fun App(context: Context) {
     MyApplicationTheme {
         Surface {
+
             val navController = rememberNavController();
             MyApplicationTheme {
                 Screen(navController, context)

@@ -1,6 +1,7 @@
 package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.di
 
 import android.content.Context
+import androidx.annotation.VisibleForTesting
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.DefaultMemoriesRepository
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.MemoriesRepository
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.data.LocalDataSource
@@ -14,6 +15,8 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.data.source.ApiRemoteDataSource
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.data.source.RoomLocalDataSource
 
@@ -75,6 +78,14 @@ object DatabaseModule {
             context.applicationContext,
             MemoriesDatabase::class.java,
             "Memories.db"
-        ).build()
+        )
+            .addMigrations(MIGRATION_1_2)
+            .build()
+    }
+}
+@VisibleForTesting
+internal val MIGRATION_1_2 = object : Migration(1, 2) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE memories ADD COLUMN image TEXT DEFAULT '//cdn.weatherapi.com/weather/64x64/night/323.png' NOT NULL")
     }
 }

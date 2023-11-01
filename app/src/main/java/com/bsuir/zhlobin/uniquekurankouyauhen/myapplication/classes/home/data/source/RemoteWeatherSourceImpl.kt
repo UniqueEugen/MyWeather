@@ -11,16 +11,27 @@ import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.weather.wiew
 
 import org.json.JSONObject
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 const val API_KEY = "2a0efbe6235a4e64952230911233010";
 class RemoteWeatherSourceImpl @Inject constructor(): RemoteWeatherSource {
     override fun getWeather(city: String, context: Context, weather: Weather) {
-        val url = "https://api.weatherapi.com/v1/forecast.json?" +
+        val url:String
+        if (!city.equals("0.0,0.0"))
+            url = "https://api.weatherapi.com/v1/forecast.json?" +
+                    "key=${API_KEY}&" +
+                    "q=" +
+                    "${city}" +
+                    "&days=" +
+                    "14" +
+                    "&aqi=no&alerts=no"
+        else url ="https://api.weatherapi.com/v1/forecast.json?" +
                 "key=${API_KEY}&" +
                 "q=" +
-                "${city}" +
+                "Zlobin" +
                 "&days=" +
-                "3" +
+                "14" +
                 "&aqi=no&alerts=no"
         val queue = Volley.newRequestQueue(context)
         val sReq = StringRequest(
@@ -31,6 +42,7 @@ class RemoteWeatherSourceImpl @Inject constructor(): RemoteWeatherSource {
                 val list = getWeatherByHours(res)
                 weather.currentDay.value = list[0]
                 weather.mList.value = list
+                weather.city=list[0].city
             },
             {
                 Log.d("MyLog", "VolleyError${it}")
@@ -68,9 +80,49 @@ class RemoteWeatherSourceImpl @Inject constructor(): RemoteWeatherSource {
         }
         list[0] = list[0].copy(
             lastUpdated = mainObj.getJSONObject("current").getString("last_updated"),
-            currentTemp = mainObj.getJSONObject("current").getString("temp_c")
+            currentTemp = mainObj.getJSONObject("current").getString("temp_c"),
+            currentConditionIcon = mainObj.getJSONObject("current").getJSONObject("condition").getString("icon"),
+            currentCondition = mainObj.getJSONObject("current").getJSONObject("condition").getString("text")
         )
         return list
+    }
+
+    override suspend fun getWeatherImage(city: String, context: Context)
+    = suspendCoroutine<String>{
+        val url:String
+        if (!city.equals("0.0,0.0"))
+            url = "https://api.weatherapi.com/v1/current.json?" +
+                "key=" +
+                 API_KEY +
+                "&q=" +
+                "$city" +
+                "&aqi=no"
+        else url ="https://api.weatherapi.com/v1/current.json?" +
+                "key=" +
+                API_KEY +
+                "&q=" +
+                "Zlobin" +
+                "&aqi=no"
+        val queue = Volley.newRequestQueue(context)
+        val sReq = StringRequest(
+            Request.Method.GET,
+            url,
+            {
+                    res->
+                it.resume(getResImage(res))
+            },
+            {
+                Log.d("MyLog", "VolleyError${it}")
+            }
+        )
+        queue.add(sReq)
+    }
+
+    override fun getResImage(res: String): String {
+        if (res.isEmpty()) return ""
+        val mainObj = JSONObject(res)
+        System.out.println("asd "+res)
+        return mainObj.getJSONObject("current").getJSONObject("condition").getString("icon")
     }
 
 }

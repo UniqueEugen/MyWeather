@@ -14,7 +14,7 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = 1
-        versionName = "0.2.0"
+        versionName = "0.3.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -172,6 +172,9 @@ dependencies {
 
     //volley
     implementation("com.android.volley:volley-cronet:1.2.1")
+
+    //google Play location
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
 
 }
 hilt {

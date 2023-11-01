@@ -2,6 +2,7 @@ package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.home
 
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.widget.DatePicker
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
@@ -62,6 +63,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import com.google.android.gms.location.FusedLocationProviderClient
 import java.util.Calendar
 import java.util.Calendar.DATE
 import java.util.Calendar.MONTH
@@ -72,6 +74,8 @@ import java.util.Date
 @Composable
 fun AddEditMemoryScreen(
     it: PaddingValues,
+    context: Context,
+    latitudeAndLongitude:String,
     onMemoryUpdate: () -> Unit,
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
@@ -79,7 +83,9 @@ fun AddEditMemoryScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     System.out.println("ui memory: "+ uiState.memory);
+    viewModel.setMemoryWeather("Zlobin",context, latitudeAndLongitude)
     Scaffold(
+
         modifier = modifier.fillMaxSize()/*fillMaxHeight(0.5f).fillMaxWidth().padding(top= 400.dp).background(Brush.linearGradient(
             listOf(Color.Transparent, Color.Transparent)
         ), alpha=0f)*/,
@@ -104,7 +110,9 @@ fun AddEditMemoryScreen(
                 containerColor = colorResource(R.color.Slenna),
                 floatingActionButton = {
                     FloatingActionButton(
-                        onClick = { if (!uiState.isMemorySaving) viewModel.saveMemory() }
+                        onClick = { if (!uiState.isMemorySaving) {
+                            viewModel.saveMemory()
+                        } }
                     ) {
                         Icon(Icons.Filled.Done, stringResource(R.string.save_memory_description))
                     }

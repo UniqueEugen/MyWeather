@@ -34,7 +34,11 @@ import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.data.We
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.theme.BlueLight
 
 @Composable
-fun mainCard(currentDay: MutableState<WeatherModel>) {
+fun mainCard(
+    currentDay: MutableState<WeatherModel>,
+    sync: ()->Unit,
+    search: ()->Unit
+) {
     Column(
         modifier = Modifier
             .padding(5.dp),
@@ -57,12 +61,17 @@ fun mainCard(currentDay: MutableState<WeatherModel>) {
                 ) {
                     Text(
                         modifier = Modifier,
-                        text = currentDay.value.localTime,
+                        text = when(currentDay.value.currentConditionIcon.isNotEmpty()){
+                            true->currentDay.value.localTime
+                            false->currentDay.value.date
+                            else->currentDay.value.localTime
+                        },
                         style = TextStyle(fontSize = 15.sp),
                         color = Color.White
                     )
                     AsyncImage(
-                        model = "https:${currentDay.value.conditionIcon}",
+                        model = "https:${currentDay.value.currentConditionIcon.ifEmpty { 
+                            currentDay.value.conditionIcon }}",
                         contentDescription = "wetherImg",
                         modifier = Modifier
                             .size(55.dp)
@@ -72,18 +81,20 @@ fun mainCard(currentDay: MutableState<WeatherModel>) {
                 Text(
                     modifier = Modifier,
                     text = currentDay.value.city,
-                    style = TextStyle(fontSize = 24.sp),
+                    style = TextStyle(fontSize = 28.sp),
                     color = Color.White
                 )
                 Text(
                     modifier = Modifier,
-                    text = "${currentDay.value.currentTemp}°C",
+                    text = "${currentDay.value.currentTemp.ifEmpty { "${currentDay.value.maxTemp}" +
+                            "°/${currentDay.value.minTemp}" }}°C",
                     style = TextStyle(fontSize = 65.sp),
                     color = Color.White
                 )
                 Text(
                     modifier = Modifier,
-                    text = currentDay.value.condition,
+                    text = currentDay.value.currentCondition.ifEmpty {
+                        currentDay.value.condition },
                     style = TextStyle(fontSize = 16.sp),
                     color = Color.White
                 )
@@ -94,7 +105,7 @@ fun mainCard(currentDay: MutableState<WeatherModel>) {
                 ) {
                     IconButton(
                         onClick = {
-                            /*TODO*/
+                            search.invoke()
                         }
                     ) {
                         Icon(
@@ -112,7 +123,7 @@ fun mainCard(currentDay: MutableState<WeatherModel>) {
                     )
                     IconButton(
                         onClick = {
-                            /*TODO*/
+                            sync.invoke()
                         }
                     ) {
                         Icon(

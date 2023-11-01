@@ -83,7 +83,7 @@ fun AddEditMemoryScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     System.out.println("ui memory: "+ uiState.memory);
-    viewModel.setMemoryWeather("Zlobin",context, latitudeAndLongitude)
+    viewModel.setMemoryWeather(context, latitudeAndLongitude)
     Scaffold(
 
         modifier = modifier.fillMaxSize()/*fillMaxHeight(0.5f).fillMaxWidth().padding(top= 400.dp).background(Brush.linearGradient(

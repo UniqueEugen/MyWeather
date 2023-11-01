@@ -44,6 +44,7 @@ data class AddEditMemoryUiState(
    // val planetDistanceLy: Float = 1.0F,
     val memoryAdded: Date=Date(),
     val image: String = "",
+    val currentImage: String="",
     val isLoading: Boolean = false,
     val isMemorySaved: Boolean = false,
     val isMemorySaving: Boolean = false,
@@ -125,7 +126,7 @@ class AddEditMemoryViewModel @Inject constructor(
                          id = null,
                          memory = _uiState.value.memory,
                          date = _uiState.value.memoryAdded,
-                         image = _uiState.value.image
+                         image = _uiState.value.currentImage
                      )
                  )
              }
@@ -155,7 +156,8 @@ class AddEditMemoryViewModel @Inject constructor(
                  it.copy(
                      isLoading = false,
                      memory = memory.memory,
-                     memoryAdded = memory.date
+                     memoryAdded = memory.date,
+                     image = memory.image
                  )
              }
          }
@@ -165,9 +167,9 @@ class AddEditMemoryViewModel @Inject constructor(
  fun setMemoryName(name: String) {
      _uiState.update { it.copy(memory = name) }
  }
-fun setMemoryWeather(city:String, context: Context,  latitudeAndLongitude:String) {
+fun setMemoryWeather(context: Context,  latitudeAndLongitude:String) {
     viewModelScope.launch {
-        _uiState.update { it.copy(image = remoteWeatherSource.getWeatherImage(latitudeAndLongitude, context)) }
+        _uiState.update { it.copy(currentImage = remoteWeatherSource.getWeatherImage(latitudeAndLongitude, context)) }
         System.out.println("sdfdsf" + _uiState.value.image)
     }
 }

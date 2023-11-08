@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
@@ -41,10 +42,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
-import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.viewModels.MemoriesListUiState
-import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.viewModels.MemoriesListViewModel
+import coil.compose.AsyncImage
+import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.home.viewModels.MemoriesListUiState
+import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.home.viewModels.MemoriesListViewModel
 import java.util.UUID
 
+const val DEFAULT_IMAGE = "//cdn.weatherapi.com/weather/64x64/night/323.png"
 @Composable
 fun HomeScreen(
     innerPadding: PaddingValues,
@@ -131,15 +134,15 @@ private fun MemoryItem(
             .clip(RoundedCornerShape(10.dp))
             .background(Color(0xFFBB86FC))
             .border(
-                1.dp, shape = RoundedCornerShape(10.dp), brush = Brush.linearGradient(
+                1.dp, shape = RoundedCornerShape(10.dp),
+                brush = Brush.linearGradient(
                     colors = listOf
                         (
                         Color.Yellow,
                         Color.White,
                         Color.Cyan
                     )
-                )
-                ,
+                ),
             )
 
 
@@ -148,6 +151,14 @@ private fun MemoryItem(
         Row(
             modifier = Modifier.padding(5.dp)
         ) {
+            AsyncImage(
+                model = "https:${item.image.ifEmpty{DEFAULT_IMAGE}}",
+                contentDescription = "wetherImg",
+                modifier = Modifier
+                    .size(55.dp)
+                    .padding(top = 3.dp, end = 8.dp)
+            )
+            
             Column {
                 Row(
                     modifier = Modifier.fillMaxWidth(0.8f),

@@ -1,4 +1,4 @@
-package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.viewModels
+package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.home.viewModels
 
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.WorkResult
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.domain.AddMemoryUseCase
@@ -50,9 +50,9 @@ class MemoriesListViewModel @Inject constructor(
         viewModelScope.launch {
             withLoading {
                 val memories = arrayOf(
-                    Memory(memory = "It was a perfect weather", Date()),
-                    Memory(memory = "It was a normal weather", Date()),
-                    Memory(memory = "It was a good weather", Date()),
+                    Memory(memory = "It was a perfect weather", Date(),"//cdn.weatherapi.com/weather/64x64/night/116.png"),
+                    Memory(memory = "It was a normal weather", Date(), "//cdn.weatherapi.com/weather/64x64/night/113.png"),
+                    Memory(memory = "It was a good weather", Date(), "//cdn.weatherapi.com/weather/64x64/night/323.png"),
                 )
                 memories.forEach { addMemoryUseCase(it) }
             }

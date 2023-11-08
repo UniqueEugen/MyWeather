@@ -1,4 +1,5 @@
-package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.viewModels
+/*
+package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.home.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -28,6 +29,7 @@ class HomeViewModel : ViewModel() {
             _dataFlow.emit(memoryList)
         }
     }
+*/
 /* val items: SnapshotStateList<Memory> = DefaultWeather.toMutableStateList()
 
     fun onClickRemoveMemories(memory: Memory) = items.remove(memory)
@@ -39,5 +41,6 @@ class HomeViewModel : ViewModel() {
             Memory("Good"),
             Memory("Bad")
         )
-    }*/
-}
+    }*//*
+
+}*/

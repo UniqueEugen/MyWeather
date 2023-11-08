@@ -57,7 +57,6 @@ class MemoriesNavigationActions(private val navController: NavHostController) {
         System.out.println("UUID value in navigation: "+id);
         navController.navigate(
             "${ADD_EDIT_MEMORYHOME_SCREEN}/$title".let {
-                System.out.println(if (id != null) "$it?$MEMORY_ID_ARG=$id" else it)
                 if (id != null) "$it?$MEMORY_ID_ARG=$id" else it
             }
         )

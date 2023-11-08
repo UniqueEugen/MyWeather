@@ -14,7 +14,7 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = 1
-        versionName = "0.2.0"
+        versionName = "0.3.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -162,6 +162,20 @@ dependencies {
     implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
     implementation ("androidx.navigation:navigation-compose:2.6.0")
     implementation ("androidx.navigation:navigation-runtime-ktx:2.6.0")
+
+    //InernetAsync
+    implementation("io.coil-kt:coil-compose:2.0.0-rc01")
+
+    //Pager
+    implementation ("com.google.accompanist:accompanist-pager:0.19.0")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.19.0")
+
+    //volley
+    implementation("com.android.volley:volley-cronet:1.2.1")
+
+    //google Play location
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
+
 }
 hilt {
     enableAggregatingTask = true

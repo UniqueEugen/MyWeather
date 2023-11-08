@@ -1,19 +1,17 @@
 package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
-import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.AboutApp
-import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.home.HomeScreen
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.superstructures.Screen
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.theme.MyApplicationTheme
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,17 +19,20 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            App();
+            App(this);
         }
     }
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun App(){
+fun App(context: Context) {
     MyApplicationTheme {
         Surface {
+
             val navController = rememberNavController();
-            Screen(navController)
+            MyApplicationTheme {
+                Screen(navController, context)
+            }
         }
 
     }

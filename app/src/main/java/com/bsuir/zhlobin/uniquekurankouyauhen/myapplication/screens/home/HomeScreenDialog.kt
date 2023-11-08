@@ -2,6 +2,7 @@ package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.home
 
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.widget.DatePicker
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
@@ -31,7 +32,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.outlined.Create
-import androidx.compose.material3.AlertDialogDefaults.shape
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -51,7 +51,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.R
-import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.viewModels.AddEditMemoryViewModel
+import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.home.viewModels.AddEditMemoryViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.material3.CircularProgressIndicator
@@ -63,13 +63,19 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import com.google.android.gms.location.FusedLocationProviderClient
 import java.util.Calendar
+import java.util.Calendar.DATE
+import java.util.Calendar.MONTH
+import java.util.Calendar.YEAR
 import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditMemoryScreen(
     it: PaddingValues,
+    context: Context,
+    latitudeAndLongitude:String,
     onMemoryUpdate: () -> Unit,
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
@@ -77,8 +83,12 @@ fun AddEditMemoryScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     System.out.println("ui memory: "+ uiState.memory);
+    viewModel.setMemoryWeather(context, latitudeAndLongitude)
     Scaffold(
-        modifier = modifier.fillMaxSize(),
+
+        modifier = modifier.fillMaxSize()/*fillMaxHeight(0.5f).fillMaxWidth().padding(top= 400.dp).background(Brush.linearGradient(
+            listOf(Color.Transparent, Color.Transparent)
+        ), alpha=0f)*/,
         snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
             BottomAppBar(
@@ -100,7 +110,9 @@ fun AddEditMemoryScreen(
                 containerColor = colorResource(R.color.Slenna),
                 floatingActionButton = {
                     FloatingActionButton(
-                        onClick = { if (!uiState.isMemorySaving) viewModel.saveMemory() }
+                        onClick = { if (!uiState.isMemorySaving) {
+                            viewModel.saveMemory()
+                        } }
                     ) {
                         Icon(Icons.Filled.Done, stringResource(R.string.save_memory_description))
                     }
@@ -334,6 +346,7 @@ fun MyCalendar(
             }
         }, mYear, mMonth, mDay
     )
+    val cal = Calendar.getInstance()
 
     Column(modifier = Modifier.fillMaxSize().padding(top = 50.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
         // Displaying the mDate value in the Text
@@ -352,9 +365,10 @@ fun MyCalendar(
                     )
                 )
         ) {
-            Text(text = "Selected Date: ${date}",modifier= Modifier.padding(5.dp), fontSize = 20.sp, textAlign = TextAlign.Center, color = Color.White)
+            Text(text = "Selected Date: ${date.date}/${date.month+1}/${date.year}",modifier= Modifier.padding(5.dp), fontSize = 20.sp, textAlign = TextAlign.Center, color = Color.White)
         }
-
+        //${cal.get(DATE)}/${cal.get(MONTH+1)}/${cal.get(YEAR)}
+        //${date.date}/${date.month+1}/${date.year}
         // Adding a space of 100dp height
         Spacer(modifier = Modifier.size(70.dp))
 

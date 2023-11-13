@@ -31,4 +31,5 @@
     <string name="not_reachable_description">Beyond the reach of your lifespan</string>
     <string name="error_loading_memories">An error occurred loading your memories</string>
     <string name="error_saving_memory">Unable to save your memory, please check you have entered all required details</string>
+    <string name="noInetConnection">Poor internet connection!</string>
 </resources>

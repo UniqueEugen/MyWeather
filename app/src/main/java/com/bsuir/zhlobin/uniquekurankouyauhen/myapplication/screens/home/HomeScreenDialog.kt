@@ -1,6 +1,7 @@
 package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.home
 
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Context
 import android.widget.DatePicker
@@ -70,6 +71,7 @@ import java.util.Calendar.MONTH
 import java.util.Calendar.YEAR
 import java.util.Date
 
+@SuppressLint("RememberReturnType")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditMemoryScreen(
@@ -83,7 +85,10 @@ fun AddEditMemoryScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     System.out.println("ui memory: "+ uiState.memory);
-    viewModel.setMemoryWeather(context, latitudeAndLongitude)
+    remember {
+        viewModel.setMemoryWeather(context, latitudeAndLongitude)
+    }
+
     Scaffold(
 
         modifier = modifier.fillMaxSize()/*fillMaxHeight(0.5f).fillMaxWidth().padding(top= 400.dp).background(Brush.linearGradient(
@@ -348,12 +353,17 @@ fun MyCalendar(
     )
     val cal = Calendar.getInstance()
 
-    Column(modifier = Modifier.fillMaxSize().padding(top = 50.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .padding(top = 50.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
         // Displaying the mDate value in the Text
         Box(
-            modifier = Modifier.background(brush = Brush.linearGradient(listOf(Color.Black, Color.Black)),
-                shape= RectangleShape,
-                alpha= 0.4f)
+            modifier = Modifier
+                .background(
+                    brush = Brush.linearGradient(listOf(Color.Black, Color.Black)),
+                    shape = RectangleShape,
+                    alpha = 0.4f
+                )
                 .border(
                     1.dp, shape = RectangleShape, brush = Brush.linearGradient(
                         colors = listOf

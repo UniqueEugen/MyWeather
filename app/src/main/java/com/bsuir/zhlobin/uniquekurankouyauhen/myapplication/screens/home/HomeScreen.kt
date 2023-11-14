@@ -1,5 +1,7 @@
 package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.home
 
+import android.content.Context
+import android.media.MediaPlayer
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -8,6 +10,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -40,6 +44,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import coil.compose.AsyncImage
@@ -52,20 +58,24 @@ const val DEFAULT_IMAGE = "//cdn.weatherapi.com/weather/64x64/night/323.png"
 fun HomeScreen(
     innerPadding: PaddingValues,
     controller: NavHostController,
+    context: Context,
     addMemory: () -> Unit,
+    favoriteMemory: (UUID) -> Unit,
     editMemory: (UUID) -> Unit) {
-    HomeSuperstructure(innerPadding, controller, addMemory,editMemory);
+    HomeSuperstructure(innerPadding, controller, context, addMemory,favoriteMemory, editMemory);
 }
 @Composable
 fun HomeScreenContent(
     it: PaddingValues,
     innerPadding: PaddingValues,
     controller: NavHostController,
+    context: Context,
     addMemory: () -> Unit,
     editMemory: (UUID) -> Unit,
+    favoriteMemory:(UUID)->Unit,
     uiState: MemoriesListUiState
 ) {
-    HomeContentList(controller = controller, it, innerPadding, uiState, addMemory, editMemory)
+    HomeContentList(controller = controller, it, innerPadding, uiState,context, addMemory, editMemory,favoriteMemory)
     if (uiState.isLoading) {
         Box(Modifier.fillMaxSize()) {
             CircularProgressIndicator(Modifier.align(Alignment.Center))
@@ -80,8 +90,10 @@ fun HomeContentList(
     it: PaddingValues,
     innerPadding: PaddingValues,
     uiState: MemoriesListUiState,
+    context: Context,
     addMemory: () -> Unit,
     editMemory: (UUID) -> Unit,
+    onFavoriteMemory: (UUID) -> Unit,
     viewModel: MemoriesListViewModel = hiltViewModel()
 ){
 //    val dataList by viewModel.dataFlow.collectAsState(emptyList())
@@ -110,7 +122,9 @@ fun HomeContentList(
                 deleteMemory = viewModel::deleteMemory,
                 dataList = uiState.memories,
                 it = it,
-                viewModel = viewModel
+                viewModel = viewModel,
+                context = context,
+                onFavoriteMemory = onFavoriteMemory
             )
         }
     }
@@ -121,18 +135,22 @@ fun HomeContentList(
 @Composable
 private fun MemoryItem(
     item: Memory,
+    context: Context,
     onEditMemory: (UUID) -> Unit,
     onRemove: (UUID) -> Unit,
+    onFavoriteMemory:(UUID)->Unit
    // onAdd: () -> Unit,
 ){
-    Box(
+    val luchshiy =MediaPlayer.create(context,R.raw.luchshiy_den)
+    Column(
         modifier= Modifier
             .fillMaxSize(0.9f)
             .padding(top = 20.dp, start = 30.dp)
-            .clickable { item.id?.let { onEditMemory(it) } }
+            .clickable { item.id?.let { onFavoriteMemory(it) } }
             .shadow(5.dp, RoundedCornerShape(10.dp))
             .clip(RoundedCornerShape(10.dp))
             .background(Color(0xFFBB86FC))
+            .defaultMinSize(minHeight = 100.dp)
             .border(
                 1.dp, shape = RoundedCornerShape(10.dp),
                 brush = Brush.linearGradient(
@@ -143,53 +161,54 @@ private fun MemoryItem(
                         Color.Cyan
                     )
                 ),
-            )
-
-
-
-    ){
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Row(
-            modifier = Modifier.padding(5.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(5.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             AsyncImage(
-                model = "https:${item.image.ifEmpty{DEFAULT_IMAGE}}",
+                model = "https:${item.image.ifEmpty { DEFAULT_IMAGE }}",
                 contentDescription = "wetherImg",
                 modifier = Modifier
                     .size(55.dp)
                     .padding(top = 3.dp, end = 8.dp)
             )
-            
-            Column {
-                Row(
-                    modifier = Modifier.fillMaxWidth(0.8f),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.End
 
-                ) {
-                    Text(
-                        text = item.memory,
-                        modifier = Modifier,
-                        fontStyle = FontStyle.Italic,
-                        fontSize = 24.sp,
-                        color = Color.White,
+            Text(
+                text = item.memory,
+                modifier = Modifier.fillMaxWidth(0.75f),
+                fontStyle = FontStyle.Italic,
+                fontSize = 24.sp,
+                color = Color.White,
 
-                        )
-                }
-                Row(
-                    modifier = Modifier,
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    Text(
-                        text = item.date.toString(),
-                        modifier = Modifier,
-                        fontSize = 9.sp,
-                        color = colorResource(R.color.lightYellow)
-                    )
-                }
+                )
+            IconButton(onClick = { if(item.favorite)luchshiy.start()}) {
+                Icon(
+                    painter = painterResource(
+                        id = R.drawable.favorite
+                    ),
+                    contentDescription = "isFavorite",
+                    modifier = Modifier.size(30.dp, 30.dp),
+                    tint = if (!item.favorite) Color.Black else Color.Yellow,
+                )
             }
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = item.date.toString().substring(0, 19),
+                modifier = Modifier.padding(start = 5.dp, bottom = 5.dp, top=20.dp),
+                fontSize = 9.sp,
+                color = colorResource(R.color.lightYellow)
+            )
             IconButton(
                 modifier = Modifier
-                    .align(Alignment.CenterVertically)
                     .width(32.dp)
                     .height(32.dp),
                 onClick = { item.id?.let { onRemove(it) } }
@@ -197,7 +216,6 @@ private fun MemoryItem(
                 Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete")
             }
         }
-
     }
 }
 @Composable
@@ -205,8 +223,10 @@ private fun HomeCommonContent(
     dataList: List<Memory>,
     it: PaddingValues,
     viewModel: MemoriesListViewModel,
+    context: Context,
     editMemory: (UUID) -> Unit,
-    deleteMemory: (UUID) -> Unit
+    deleteMemory: (UUID) -> Unit,
+    onFavoriteMemory: (UUID) -> Unit
 ) {
     LazyColumn(
 
@@ -218,8 +238,10 @@ private fun HomeCommonContent(
         items(dataList) { item ->
             MemoryItem(
                 item = item,
+                context,
                 onEditMemory = editMemory,
-                onRemove = deleteMemory
+                onRemove = deleteMemory,
+                onFavoriteMemory = onFavoriteMemory
             )
         }
     }

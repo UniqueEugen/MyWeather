@@ -80,12 +80,21 @@ object DatabaseModule {
             "Memories.db"
         )
             .addMigrations(MIGRATION_1_2)
+            .addMigrations(MIGRATION_2_3)
             .build()
     }
 }
+
 @VisibleForTesting
 internal val MIGRATION_1_2 = object : Migration(1, 2) {
     override fun migrate(db: SupportSQLiteDatabase) {
         db.execSQL("ALTER TABLE memories ADD COLUMN image TEXT DEFAULT '//cdn.weatherapi.com/weather/64x64/night/323.png' NOT NULL")
+    }
+}
+
+@VisibleForTesting
+internal val MIGRATION_2_3 = object : Migration(2, 3) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE memories ADD COLUMN favorite INTEGER DEFAULT 0 NOT NULL")
     }
 }

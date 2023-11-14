@@ -21,6 +21,7 @@
     <string name="name_hint">Title</string>
     <string name="add_memory">Add Memory</string>
     <string name="edit_memory">Edit Memory</string>
+    <string name="favorite_memory">"Favorite Memory"</string>
     <string name="no_memories_label">No memories discovered yet</string>
     <string name="memory_image_content_description">Photo of an alien memory</string>
     <!--<string name="distance_description">Enter distance (light years)</string>
@@ -32,4 +33,6 @@
     <string name="error_loading_memories">An error occurred loading your memories</string>
     <string name="error_saving_memory">Unable to save your memory, please check you have entered all required details</string>
     <string name="noInetConnection">Poor internet connection!</string>
+    <string name="toFavorite">Added to favorites</string>
+    <string name="fromFavorite">Removed from favorites</string>
 </resources>

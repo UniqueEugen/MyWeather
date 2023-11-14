@@ -12,7 +12,7 @@ import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.R
 sealed class Screen(val screenName: String, val titleResourceId: Int) {
     object Home: Screen("Home", -1)
     object Weather: Screen("Weather", R.string.weather)
-    object Memories: Screen("Memories", -1)
+    object Favorite: Screen("Favorite", -1)
     object About: Screen("About App", R.string.aboutApp)
 
 }

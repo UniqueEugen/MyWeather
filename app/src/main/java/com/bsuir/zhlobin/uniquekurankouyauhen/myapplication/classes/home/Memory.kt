@@ -7,5 +7,6 @@ data class Memory(
     val memory: String,
     val date: Date,
     val image: String,
+    val favorite: Boolean,
     val id: UUID? = null,
 )

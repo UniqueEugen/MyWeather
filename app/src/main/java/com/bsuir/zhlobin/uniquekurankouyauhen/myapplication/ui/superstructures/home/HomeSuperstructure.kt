@@ -1,5 +1,6 @@
 package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.superstructures.home
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -42,7 +43,9 @@ import java.util.UUID
 fun HomeSuperstructure(
     innerPadding: PaddingValues,
     controller: NavHostController,
+    context: Context,
     addMemory: () -> Unit,
+    favoriteMemory: (UUID)->Unit,
     editMemory: (UUID) -> Unit,
     snackbarHostState: SnackbarHostState = remember {   SnackbarHostState() },
     viewModel: MemoriesListViewModel = hiltViewModel()
@@ -92,7 +95,10 @@ fun HomeSuperstructure(
                 }
             )
         },
-        content = {it-> HomeScreenContent(it, innerPadding, controller, addMemory, editMemory, uiState) }
+        content = {it-> HomeScreenContent(it, innerPadding, controller, context, addMemory, favoriteMemory = favoriteMemory,
+            editMemory = editMemory,
+            uiState = uiState
+        ) }
     )
 }
 /*

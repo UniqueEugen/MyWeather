@@ -72,7 +72,6 @@ fun Screen(navController: NavHostController, context: Context, viewModel: supers
     val navItems = listOf(
         stringResource(id = R.string.home),
         stringResource(id = R.string.weather),
-        stringResource(id = R.string.memories),
         stringResource(id = R.string.aboutApp)
     )
     ModalNavigationDrawer(

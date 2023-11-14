@@ -5,17 +5,19 @@ import androidx.navigation.NavHostController
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.MemoriesDestinationsArgs.MEMORY_ID_ARG
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.MemoriesDestinationsArgs.TITLE_ARG
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.MemoriesDestinationsArgs.USER_MESSAGE_ARG
-import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.PlanetsScreens.ADD_EDIT_MEMORYHOME_SCREEN
-import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.PlanetsScreens.HOME_SCREEN
+import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.MemoriesScreens.ADD_EDIT_MEMORYHOME_SCREEN
+import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.MemoriesScreens.FAVORITE_MEMORY_SCREEN
+import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.MemoriesScreens.HOME_SCREEN
 import java.util.UUID
 
-private object PlanetsScreens {
+private object MemoriesScreens {
     const val HOME_SCREEN = "Home"
     const val ADD_EDIT_MEMORYHOME_SCREEN = "AddEditMemoryScreen"
+    const val FAVORITE_MEMORY_SCREEN ="FavoriteScreen"
 }
 
 /**
- * Arguments used in [PlanetsDestinations] routes
+ * Arguments used in [MemoriesDestinations] routes
  */
 object MemoriesDestinationsArgs {
     const val USER_MESSAGE_ARG = "userMessage"
@@ -29,6 +31,7 @@ object MemoriesDestinationsArgs {
 object MemoriesDestinations {
     const val MEMORIES_ROUTE = "$HOME_SCREEN?$USER_MESSAGE_ARG={$USER_MESSAGE_ARG}"
     const val ADD_EDIT_MEMORY_ROUTE = "$ADD_EDIT_MEMORYHOME_SCREEN/{$TITLE_ARG}?$MEMORY_ID_ARG={$MEMORY_ID_ARG}"
+    const val FAVORITE_MEMORY_ROUTE = "$FAVORITE_MEMORY_SCREEN/{$TITLE_ARG}?$MEMORY_ID_ARG={$MEMORY_ID_ARG}"
 }
 
 /**
@@ -57,6 +60,17 @@ class MemoriesNavigationActions(private val navController: NavHostController) {
         System.out.println("UUID value in navigation: "+id);
         navController.navigate(
             "${ADD_EDIT_MEMORYHOME_SCREEN}/$title".let {
+                if (id != null) "$it?$MEMORY_ID_ARG=$id" else it
+            }
+        )
+    }
+
+
+    fun navigateToFavorite(title: Int, id: UUID?) {
+        System.out.println("title is: "+title);
+        System.out.println("UUID value in navigation: "+id);
+        navController.navigate(
+            "${FAVORITE_MEMORY_SCREEN}/$title".let {
                 if (id != null) "$it?$MEMORY_ID_ARG=$id" else it
             }
         )

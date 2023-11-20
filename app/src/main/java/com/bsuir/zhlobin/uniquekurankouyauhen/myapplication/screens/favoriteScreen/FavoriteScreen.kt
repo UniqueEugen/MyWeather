@@ -132,7 +132,10 @@ fun FavoriteScreen(
                 containerColor = colorResource(R.color.Slenna),
                 floatingActionButton = {
                     FloatingActionButton(
-                        onClick = { state.memory.id?.let { onNavigateToDetailScreen(it) } }
+                        onClick = {
+                            event.invoke(FavoriteMemoryMVI.Event.OnShowUpdatebleScreen(state.memory))
+                            state.memory.id?.let{onNavigateToDetailScreen(it)}
+                        }
                     ) {
                         Icon(Icons.Filled.Edit, stringResource(R.string.save_memory_description))
                     }

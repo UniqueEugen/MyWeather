@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -54,21 +55,22 @@ class FavoriteMemoryViewModel @Inject constructor(
             FavoriteMemoryMVI.Event.OnRefresh -> refreshing()
             FavoriteMemoryMVI.Event.OnBackPressed -> onBackPressed()
             is FavoriteMemoryMVI.Event.ShowToast -> showToast(event.message)
+            is FavoriteMemoryMVI.Event.OnShowUpdatebleScreen -> createMemory(memory = event.memory)
         }
 
-   /* private fun onSetShowFavoriteList(showFavoriteList: Boolean) {
+    /* private fun onSetShowFavoriteList(showFavoriteList: Boolean) {
         _uiState.update {
             it.copy(showFavoriteMemory = showFavoriteList)
         }
     }*/
 
-    private fun refreshing(){
+    private fun refreshing() {
         _uiState.update { it.copy(refreshing = !_uiState.value.refreshing) }
     }
 
     private fun getData(
         isRefreshing: Boolean = false,
-      //  showFavoriteMemory: Boolean = false,
+        //  showFavoriteMemory: Boolean = false,
     ) {
         if (isRefreshing)
             _uiState.update {
@@ -77,7 +79,7 @@ class FavoriteMemoryViewModel @Inject constructor(
                 )
             }
         viewModelScope.launch {
-            if(memoryId!=null) loadMemory(UUID.fromString(memoryId))
+            if (memoryId != null) loadMemory(UUID.fromString(memoryId))
         }
     }
 
@@ -86,8 +88,7 @@ class FavoriteMemoryViewModel @Inject constructor(
             val result = memoriesRepository.getMemoryFlow(memoryId).first()
             if (result !is WorkResult.Success || result.data == null) {
                 _uiState.update { it.copy(error = true) }
-            }
-            else {
+            } else {
                 val memory = result.data
                 _uiState.update {
                     it.copy(
@@ -97,15 +98,16 @@ class FavoriteMemoryViewModel @Inject constructor(
             }
         }
     }
+
     private fun onFavoriteClick(memory: Memory) {
-        val memory=memory.copy(favorite = !memory.favorite)
+        val memory = memory.copy(favorite = !memory.favorite)
         _uiState.update { FavoriteMemoryMVI.State(memory = memory) }
         viewModelScope.launch(Dispatchers.IO) {
-            if(memoryId!=null) {
+            if (memoryId != null) {
                 addMemoryUseCase(
                     memory
                 )
-            }else{
+            } else {
                 /*addMemoryUseCase(
                     Memory(
                         id = null,
@@ -127,8 +129,8 @@ class FavoriteMemoryViewModel @Inject constructor(
     }
 
     private fun showToast(message: String) {
-        Log.d("MyLog"," In coroutine toast ${_uiState.value.memory.favorite}")
-        Log.d("MyLog"," In coroutine toas2t ${uiState.value.memory.favorite}")
+        Log.d("MyLog", " In coroutine toast ${_uiState.value.memory.favorite}")
+        Log.d("MyLog", " In coroutine toas2t ${uiState.value.memory.favorite}")
         viewModelScope.launch {
             _effect.emit(
                 FavoriteMemoryMVI.Effect.ShowToast(message = message, uiState.value.memory.favorite)
@@ -136,4 +138,32 @@ class FavoriteMemoryViewModel @Inject constructor(
         }
     }
 
+    private fun createMemory(memory: Memory) {
+        Log.d("MyLog", "sdfsfs" + memoryId)
+        viewModelScope.launch(Dispatchers.IO) {
+            if (memory == null) {
+                addMemoryUseCase(
+                    Memory(
+                        id = null,
+                        memory = memory.memory,
+                        date = memory.date,
+                        image = memory.image,
+                        favorite = memory.favorite
+                    )
+                )
+                val memories = memoriesRepository.getMemoriesFlow()
+                val numLoadingItems = MutableStateFlow(0)
+                Log.d("MyLog", memory.memory+ "sdfsfs" + memory.id)
+                combine(memories, numLoadingItems) { memories, loadingItems ->
+                    when (memories) {
+                        is WorkResult.Error -> _uiState.update { it.copy(error = true) }
+                        is WorkResult.Loading -> _uiState.update { it.copy(refreshing = true) }
+                        is WorkResult.Success ->{ _uiState.update { it.copy(memory = memories.data[memories.data.size-1]) }
+                            Log.d("MyLog", _uiState.value.memory.id.toString() + "sdfsfs")
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

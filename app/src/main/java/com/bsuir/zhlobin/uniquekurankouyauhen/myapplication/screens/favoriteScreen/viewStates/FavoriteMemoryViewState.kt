@@ -4,6 +4,7 @@ import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.Memory
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.util.Date
+import java.util.UUID
 
 
 /*
@@ -48,6 +49,7 @@ interface FavoriteMemoryMVI:
        /* data class OnSetShowFavoriteMemory(val showFavoriteList: Boolean) : Event()*/
         object OnRefresh: Event()
         object OnBackPressed : Event()
+        data class OnShowUpdatebleScreen(val memory: Memory): Event()
         data class ShowToast(val message: String) : Event()
     }
 

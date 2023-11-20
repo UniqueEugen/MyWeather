@@ -13,6 +13,8 @@ data class MemoryEntity(
     val memory: String="",
     @ColumnInfo(name="image")
     val image: String="",
+    @ColumnInfo(name="favorite")
+    val favorite: Int,
     @ColumnInfo(name="date")
     val date: Date = Date(),
     @PrimaryKey val id: UUID, // java.util.UUID, сила котлина
@@ -22,7 +24,8 @@ data class MemoryEntity(
             id = id,
             memory = memory,
             date = date,
-            image = image
+            image = image,
+            favorite = favorite==1
         )
     }
 }
@@ -32,6 +35,7 @@ fun Memory.toMemoryEntity(): MemoryEntity  {
         id = id ?: UUID.randomUUID(),
         memory = memory,
         date = date,
-        image = image
+        image = image,
+        favorite = if (favorite) 1 else 0
     )
 }

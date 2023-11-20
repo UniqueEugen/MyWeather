@@ -13,7 +13,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.data.source.MemoriesDao
 import java.util.Date
 
-@Database(entities = [MemoryEntity::class], version = 2,
+@Database(entities = [MemoryEntity::class], version = 3,
     exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class MemoriesDatabase : RoomDatabase() {

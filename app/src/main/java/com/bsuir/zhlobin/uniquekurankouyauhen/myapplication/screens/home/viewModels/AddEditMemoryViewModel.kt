@@ -1,40 +1,23 @@
 package com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.screens.home.viewModels
 
-import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Context
-import android.content.pm.PackageManager
-import android.location.Location
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.R
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.WorkResult
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.MemoriesRepository
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.Memory
-import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.data.RemoteWeatherSource
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.classes.home.data.source.RemoteWeatherSourceImpl
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.domain.AddMemoryUseCase
 import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.MemoriesDestinationsArgs
-import com.bsuir.zhlobin.uniquekurankouyauhen.myapplication.ui.navigation.MemoriesNavigationActions
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.tasks.CancellationToken
-import com.google.android.gms.tasks.CancellationTokenSource
-import com.google.android.gms.tasks.OnTokenCanceledListener
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import java.util.Date
 import java.util.UUID
 import javax.inject.Inject
@@ -45,6 +28,7 @@ data class AddEditMemoryUiState(
     val memoryAdded: Date=Date(),
     val image: String = "",
     val currentImage: String="",
+    val favoriteItem: Boolean = false,
     val isLoading: Boolean = false,
     val isMemorySaved: Boolean = false,
     val isMemorySaving: Boolean = false,
@@ -117,7 +101,8 @@ class AddEditMemoryViewModel @Inject constructor(
                          id = UUID.fromString(memoryId),
                          memory = _uiState.value.memory,
                          date = _uiState.value.memoryAdded,
-                         image = _uiState.value.image
+                         image = _uiState.value.image,
+                         favorite = _uiState.value.favoriteItem
                  )
                  )
              }else{
@@ -126,7 +111,8 @@ class AddEditMemoryViewModel @Inject constructor(
                          id = null,
                          memory = _uiState.value.memory,
                          date = _uiState.value.memoryAdded,
-                         image = _uiState.value.currentImage
+                         image = _uiState.value.currentImage,
+                         favorite = false
                      )
                  )
              }
@@ -157,7 +143,8 @@ class AddEditMemoryViewModel @Inject constructor(
                      isLoading = false,
                      memory = memory.memory,
                      memoryAdded = memory.date,
-                     image = memory.image
+                     image = memory.image,
+                     favoriteItem = memory.favorite
                  )
              }
          }
